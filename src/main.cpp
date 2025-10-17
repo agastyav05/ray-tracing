@@ -53,7 +53,7 @@ void render(Vec &world_start, Vec &world_end, Color &background_color, Vec &scre
     }
     std::cout << "\rRendering complete\n";
     std::ofstream f("image.ppm");
-    f << "P3 " << screen_end.y - screen_start.y + 1 << ' ' << screen_end.x - screen_start.x + 1 << " 255\n";
+    f << "P3 " << screen_size.y << ' ' << screen_size.x << " 255\n";
     for (int y = screen_size.y - 1; y >= 0; y--) {
         for (int x = 0; x < screen_size.x; x++) {
             f << image[x][y].r << ' ' << image[x][y].g << ' '  << image[x][y].b << ' ';
@@ -73,7 +73,7 @@ int main() {
     std::vector<Obj *> objects;
     objects.push_back(new Sphere(Vec(500, 500, 75), 50, Color(255, 0, 0)));
     objects.push_back(new RectPrism(Vec(450, 450, 25), Vec(500, 500, 125), Color(0, 0, 255)));
-    objects.push_back(new RectPrism(Vec(530, 450, 25), Vec(540, 510, 35), Color(0, 128, 2)));
+    objects.push_back(new RectPrism(Vec(530, 450, 25), Vec(540, 510, 35), Color(0, 128, 0)));
     std::vector<Light *> lights;
     lights.push_back(new Light(Vec(500, 600, -50)));
     render(world_start, world_end, background_color, screen_start, screen_end, eye, step_size, objects, lights);
