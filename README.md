@@ -6,5 +6,5 @@ Building & running:
 
 ```
 ./build
-./run [filename (default: image)]
+./run [filename (optional)]
 ```
