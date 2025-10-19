@@ -10,7 +10,7 @@ inline bool in_world(Vec &p, Vec &world_start, Vec &world_end) {
     return p.x >= world_start.x && p.x <= world_end.x && p.y >= world_start.y && p.y <= world_end.y && p.z >= world_start.z && p.z <= world_end.z;
 }
 
-void render(Vec &world_start, Vec &world_end, Color &background_color, Vec &screen_start, Vec &screen_end, Vec &eye, float step_size, std::vector<Obj *> &objects, std::vector<Light *> &lights) {
+void render(Vec &world_start, Vec &world_end, Color &background_color, Vec &screen_start, Vec &screen_end, Vec &eye, float step_size, std::vector<Obj *> &objects, std::vector<Light *> &lights, std::string filename="image") {
     Vec screen_size = screen_end - screen_start + *(new Vec(1, 1, 1));
     std::cout << "Image size: " << screen_size.x << 'x' << screen_size.y << '\n';
     Color image[(int) screen_size.x][(int) screen_size.y];
@@ -52,7 +52,7 @@ void render(Vec &world_start, Vec &world_end, Color &background_color, Vec &scre
         }
     }
     std::cout << "\rRendering complete\n";
-    std::ofstream f("image.ppm");
+    std::ofstream f(filename + ".ppm");
     f << "P3 " << screen_size.y << ' ' << screen_size.x << " 255\n";
     for (int y = screen_size.y - 1; y >= 0; y--) {
         for (int x = 0; x < screen_size.x; x++) {
@@ -62,7 +62,12 @@ void render(Vec &world_start, Vec &world_end, Color &background_color, Vec &scre
     }
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    std::string filename = "image";
+    if (argc >= 2) {
+        filename = argv[1];
+    }
+    std::cout << "Writing to " << filename << ".ppm\n";
     Vec world_start = Vec();
     Vec world_end = Vec(1000, 1000, 100);
     Color background_color = Color(50, 50, 50);
@@ -76,5 +81,5 @@ int main() {
     objects.push_back(new RectPrism(Vec(530, 450, 25), Vec(540, 510, 35), Color(0, 128, 0)));
     std::vector<Light *> lights;
     lights.push_back(new Light(Vec(500, 600, -50)));
-    render(world_start, world_end, background_color, screen_start, screen_end, eye, step_size, objects, lights);
+    render(world_start, world_end, background_color, screen_start, screen_end, eye, step_size, objects, lights, filename);
 }
